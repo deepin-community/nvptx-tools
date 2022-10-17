@@ -1,0 +1,40 @@
+#!/usr/bin/make -f
+
+export SHELL = /bin/bash
+
+%:
+	dh $@ --with autotools_dev
+
+override_dh_auto_build:
+	dh_auto_build
+ifneq (,$(wildcard /usr/bin/help2man))
+	PATH=.:$$PATH help2man -N -n '"assembler" for PTX' nvptx-none-as \
+	  > debian/nvptx-none-as.1
+	PATH=.:$$PATH help2man -N -n '"linker" for PTX' nvptx-none-ld \
+	  > debian/nvptx-none-ld.1
+  ifeq (0,1)
+	PATH=.:$$PATH help2man -N -n 'run PTX binaries compiled with -mmainkernel' \
+	  nvptx-none-run \
+	  > debian/nvptx-none-run.1
+	PATH=.:$$PATH help2man -N -n 'run PTX binaries locked, compiled with -mmainkernel' \
+	  nvptx-none-run \
+	  > debian/nvptx-none-run-single.1
+  endif
+endif
+
+override_dh_auto_install:
+	dh_auto_install
+	mkdir -p debian/nvptx-tools/usr/share/man/man1
+	cp -p debian/*.1 debian/nvptx-tools/usr/share/man/man1/.
+	ln -sf ar.1.gz debian/nvptx-tools/usr/share/man/man1/nvptx-none-ar.1.gz
+	ln -sf ranlib.1.gz debian/nvptx-tools/usr/share/man/man1/nvptx-none-ranlib.1.gz
+
+override_dh_auto_clean:
+	rm -f libiberty/*.[ao]
+	rm -f libiberty/config.{h,log,status}
+	rm -f libiberty/{required-list,stamp-h,stamp-picdir,temp-frag}
+	rm -f libiberty/Makefile libiberty/testsuite/Makefile
+
+	rm -f nvptx-none-as nvptx-none-ld nvptx-none-run
+	rm -f config.{log,status} libiberty.stmp
+	rm -f dejagnu.exp Makefile

@@ -1,0 +1,3 @@
+# GNU toolchain for nvptx-none goes into /usr/nvptx-none
+nvptx-tools binary: non-standard-dir-in-usr
+nvptx-tools binary: file-in-unusual-dir

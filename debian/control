@@ -1,0 +1,28 @@
+Source: nvptx-tools
+Section: devel
+Priority: optional
+Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Uploaders: Matthias Klose <doko@debian.org>
+Build-Depends: debhelper (>= 9), autotools-dev,
+# only needed for the nvptx-non-run binary, which is not built:
+# nvidia-cuda-dev
+Standards-Version: 4.1.3
+Homepage: https://github.com/MentorEmbedded/nvptx-tools/
+#Vcs-Git: https://anonscm.debian.org/collab-maint/nvptx-tools.git
+#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/nvptx-tools.git
+
+Package: nvptx-tools
+Architecture: any
+Multi-Arch: foreign
+Depends: binutils, ${shlibs:Depends}, ${misc:Depends}
+Suggests: nvidia-cuda-toolkit
+Description: collection of tools for use with nvptx-none GCC toolchains
+ The tools consist of
+  - nvptx-none-as: "assembler" for PTX.
+  - nvptx-none-ld: "linker" for PTX.
+#  - nvptx-none-run: run PTX binaries compiled with -mmainkernel.
+#  - nvptx-none-run-single: as nvptx-none-run, locked, such that system-wide
+#    only one instance of it is running at a time.
+ Additionally, the following symlinks are installed:
+  - nvptx-none-ar: link to the GNU/Linux host system's ar.
+  - nvptx-none-ranlib: link to the GNU/Linux host system's ranlib.
